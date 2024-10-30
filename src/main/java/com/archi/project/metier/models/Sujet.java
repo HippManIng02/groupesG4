@@ -33,7 +33,7 @@ public class Sujet{
 	
 	@Override
 	public String toString() {
-		return "Sujet { Id = " + this.getId() + " intitule = " + this.getIntitule() + "}";
+		return "Sujet { Id = " + this.getId() + "; intitule = " + this.getIntitule() + "}";
 	}
 	
 }

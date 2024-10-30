@@ -6,7 +6,7 @@ import com.archi.project.metier.models.Sujet;
 
 public interface SujetInterface{
 	
-	void createSujet(String intitule);
+	boolean createSujet(String intitule);
 	boolean deleteSujet(int id);
 	ArrayList<Sujet> listSujets();
 	

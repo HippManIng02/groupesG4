@@ -5,7 +5,7 @@ import com.archi.project.metier.models.UniteEnseignement;
 import java.util.ArrayList;
 
 public interface UniteEnseignementInterface {
-    void createUE(String code, String designation);
+    boolean createUE(String code, String designation);
     boolean deleteUE(int id);
     ArrayList<UniteEnseignement> listUEs();
 }
