@@ -1,0 +1,15 @@
+/home/hippolyte/Documents/Master2-IHPS/Projets/groupesG4/src/main/java/com/archi/project/interfaces/EleveInterface.java
+/home/hippolyte/Documents/Master2-IHPS/Projets/groupesG4/src/main/java/com/archi/project/interfaces/GroupeInterface.java
+/home/hippolyte/Documents/Master2-IHPS/Projets/groupesG4/src/main/java/com/archi/project/interfaces/SujetInterface.java
+/home/hippolyte/Documents/Master2-IHPS/Projets/groupesG4/src/main/java/com/archi/project/interfaces/UniteEnseignementInterface.java
+/home/hippolyte/Documents/Master2-IHPS/Projets/groupesG4/src/main/java/com/archi/project/main/Main.java
+/home/hippolyte/Documents/Master2-IHPS/Projets/groupesG4/src/main/java/com/archi/project/metier/DatabaseConnection.java
+/home/hippolyte/Documents/Master2-IHPS/Projets/groupesG4/src/main/java/com/archi/project/metier/models/Eleve.java
+/home/hippolyte/Documents/Master2-IHPS/Projets/groupesG4/src/main/java/com/archi/project/metier/models/Groupe.java
+/home/hippolyte/Documents/Master2-IHPS/Projets/groupesG4/src/main/java/com/archi/project/metier/models/Personne.java
+/home/hippolyte/Documents/Master2-IHPS/Projets/groupesG4/src/main/java/com/archi/project/metier/models/Sujet.java
+/home/hippolyte/Documents/Master2-IHPS/Projets/groupesG4/src/main/java/com/archi/project/metier/models/UniteEnseignement.java
+/home/hippolyte/Documents/Master2-IHPS/Projets/groupesG4/src/main/java/com/archi/project/metier/services/EleveService.java
+/home/hippolyte/Documents/Master2-IHPS/Projets/groupesG4/src/main/java/com/archi/project/metier/services/GroupeService.java
+/home/hippolyte/Documents/Master2-IHPS/Projets/groupesG4/src/main/java/com/archi/project/metier/services/SujetService.java
+/home/hippolyte/Documents/Master2-IHPS/Projets/groupesG4/src/main/java/com/archi/project/metier/services/UniteEnseignementService.java
