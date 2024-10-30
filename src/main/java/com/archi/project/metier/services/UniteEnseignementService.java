@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
+
 
 import com.archi.project.interfaces.UniteEnseignementInterface;
 import com.archi.project.metier.DatabaseConnection;
@@ -21,7 +21,7 @@ public class UniteEnseignementService implements  UniteEnseignementInterface{
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, code);
-            stmt.setString(1, designation);
+            stmt.setString(2, designation);
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -29,20 +29,29 @@ public class UniteEnseignementService implements  UniteEnseignementInterface{
     }
 
     @Override
-    public void deleteUE(int id) {
-        String sql = "DELETE FROM unite_enseignement WHERE id = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, id);
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public boolean deleteUE(int id) {
+    	 String deleteFromGroupeSQL = "DELETE FROM groupe WHERE id_ue = ?";
+    	    String deleteUESQL = "DELETE FROM unite_enseignement WHERE id = ?";
+
+    	    try (Connection connection = DatabaseConnection.getConnection()) {
+    	        PreparedStatement stmtGroupe = connection.prepareStatement(deleteFromGroupeSQL);
+    	        stmtGroupe.setInt(1, id);
+    	        stmtGroupe.executeUpdate();
+
+    	        PreparedStatement stmtUE = connection.prepareStatement(deleteUESQL);
+    	        stmtUE.setInt(1, id);
+    	        int rowsAffected = stmtUE.executeUpdate();
+
+    	        return rowsAffected > 0;
+    	    } catch (SQLException e) {
+    	        e.printStackTrace();
+    	        return false;
+    	    }
     }
 
     @Override
-    public List<UniteEnseignement> listUEs() {
-         List<UniteEnseignement> ueList = new ArrayList<>();
+    public ArrayList<UniteEnseignement> listUEs() {
+        ArrayList<UniteEnseignement> ueList = new ArrayList<>();
         String sql = "SELECT * FROM unite_enseignement";
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement();
