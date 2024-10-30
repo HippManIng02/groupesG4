@@ -1,7 +1,7 @@
 package com.archi.project.main;
 
-import com.archi.project.interfaces.UniteEnseignementInterface;
-import com.archi.project.metier.services.UniteEnseignementService;
+import com.archi.project.interfaces.GroupeInterface;
+import com.archi.project.metier.services.GroupeService;
 
 /**
  * Hello world!
@@ -9,12 +9,12 @@ import com.archi.project.metier.services.UniteEnseignementService;
  */
 public class Main 
 {
-    private static final UniteEnseignementInterface uniteEnseignementInterface = new UniteEnseignementService();
+    private static final GroupeInterface groupeInterface = new GroupeService();
     public static void main( String[] args )
     {
         System.out.println(System.getProperty("java.class.path"));
-
-        System.out.println(uniteEnseignementInterface.listUEs());
+        
+        System.out.println(groupeInterface.listGroupes());
 
     }
 }

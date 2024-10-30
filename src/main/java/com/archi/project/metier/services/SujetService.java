@@ -15,14 +15,16 @@ import com.archi.project.metier.models.Sujet;
 public class SujetService implements SujetInterface{
 
 	@Override
-	public void createSujet(String intitule) {
+	public boolean createSujet(String intitule) {
 		 String sql = "INSERT INTO sujet (intitule) VALUES (?)";
 	        try (Connection conn = DatabaseConnection.getConnection();
 	             PreparedStatement stmt = conn.prepareStatement(sql)) {
 	            stmt.setString(1, intitule);
 	            stmt.executeUpdate();
+	            return true;
 	        } catch (SQLException e) {
 	            e.printStackTrace();
+	            return false;
 	        }
 		
 	}

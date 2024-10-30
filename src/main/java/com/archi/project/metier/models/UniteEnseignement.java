@@ -45,7 +45,7 @@ public class UniteEnseignement {
 
 	@Override
 	public String toString() {
-		return "Ue{ Id = " + this.getId() + " code = " + this.getCode() + "Designation = " + this.getDesignation() + "}";
+		return "Ue{ Id = " + this.getId() + "; code = " + this.getCode() + "; Designation = " + this.getDesignation() + "}";
 	}
 
 }

@@ -16,15 +16,17 @@ import com.archi.project.metier.models.UniteEnseignement;
 public class UniteEnseignementService implements  UniteEnseignementInterface{
 
     @Override
-    public void createUE(String code, String designation) {
+    public boolean createUE(String code, String designation) {
         String sql = "INSERT INTO unite_enseignement (code, designation) VALUES (?,?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, code);
             stmt.setString(2, designation);
             stmt.executeUpdate();
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 

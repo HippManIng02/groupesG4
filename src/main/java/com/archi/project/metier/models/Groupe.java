@@ -67,6 +67,6 @@ public class Groupe{
 	
 	@Override
 	public String toString() {
-		return super.toString();
+		return "Groupe{ Id = " + this.getId() + "; identifiant = " + this.getIdentifiant() + "; sujet = " + this.getSujet().getIntitule() + "; Ue = "+this.getUe().getCode()+"; Eleves = "+this.getEleves()+"}";
 	}
 }

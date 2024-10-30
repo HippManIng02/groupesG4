@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.archi.project.interfaces.EleveInterface;
@@ -17,7 +16,7 @@ public class EleveService implements EleveInterface{
 	private String type = "eleve";
 
 	@Override
-	public void createEleve(String nom, String prenom) {
+	public boolean createEleve(String nom, String prenom) {
 		 String sql = "INSERT INTO personne (nom, prenom, type) VALUES (?,?,?)";
 	        try (Connection conn = DatabaseConnection.getConnection();
 	             PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -25,8 +24,10 @@ public class EleveService implements EleveInterface{
 	            stmt.setString(2, prenom);
 	            stmt.setString(3, type);
 	            stmt.executeUpdate();
+	            return true;
 	        } catch (SQLException e) {
 	            e.printStackTrace();
+	            return false;
 	        }
 		
 	}
@@ -34,7 +35,7 @@ public class EleveService implements EleveInterface{
 	@Override
 	public boolean deleteEleve(int id) {
 		String deleteFromGroupeSQL = "DELETE FROM groupe WHERE id_eleve = ?";
-	    String deleteEleveSQL = "DELETE FROM eleve WHERE id = ?";
+	    String deleteEleveSQL = "DELETE FROM personne WHERE id = ?";
 
 	    try (Connection connection = DatabaseConnection.getConnection()) {
 	        
@@ -57,21 +58,26 @@ public class EleveService implements EleveInterface{
 
 	@Override
 	public ArrayList<Eleve> eleves() {
-		 ArrayList<Eleve> eleves = new ArrayList<>();
-	        String sql = "SELECT * FROM personne";
-	        try (Connection conn = DatabaseConnection.getConnection();
-	             Statement stmt = conn.createStatement();
-	             ResultSet rs = stmt.executeQuery(sql)) {
+		ArrayList<Eleve> eleves = new ArrayList<>();
+	    String sql = "SELECT * FROM personne WHERE type = ?";
+
+	    try (Connection conn = DatabaseConnection.getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+	        stmt.setString(1, type);
+	        try (ResultSet rs = stmt.executeQuery()) {
 	            while (rs.next()) {
 	                int id = rs.getInt("id");
 	                String nom = rs.getString("nom");
 	                String prenom = rs.getString("prenom");
 	                eleves.add(new Eleve(id, nom, prenom));
 	            }
-	        } catch (SQLException e) {
-	            e.printStackTrace();
 	        }
-	        return eleves;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return eleves;
 	}
 	
 }
