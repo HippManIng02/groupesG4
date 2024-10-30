@@ -27,14 +27,12 @@ public class Sujet{
 	}
 	
 	@Override
-	public int hashCode() {
-		// TODO Auto-generated method stub
-		return super.hashCode();
+	public boolean equals(Object obj) {
+		return super.equals(obj);
 	}
 	
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return "Sujet { Id = " + this.getId() + " intitule = " + this.getIntitule() + "}";
 	}
 	

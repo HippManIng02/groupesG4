@@ -4,6 +4,9 @@ public class UniteEnseignement {
 	private int id;
 	private String code;
 	private String designation;
+	
+	public UniteEnseignement() {
+	}
 
 	public UniteEnseignement(int id, String code, String designation) {
 		this.setId(id);
@@ -37,13 +40,11 @@ public class UniteEnseignement {
 	
 	@Override
 	public boolean equals(Object obj) {
-		// TODO Auto-generated method stub
 		return super.equals(obj);
 	}
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
 		return "Ue{ Id = " + this.getId() + " code = " + this.getCode() + "Designation = " + this.getDesignation() + "}";
 	}
 
