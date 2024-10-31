@@ -58,20 +58,19 @@ public class GroupeService implements GroupeInterface{
 	}
 
 	@Override
-	public void createGroupesAleatoires(UniteEnseignement ue, ArrayList<Eleve> eleves,
-			ArrayList<Sujet> sujets) {
+	public void createGroupesAleatoires(UniteEnseignement ue, ArrayList<Eleve> eleves,ArrayList<Sujet> sujets, int nbrePersonneParGroupe) {
 		
         Random random = new Random();
         
-        for (int i = 0; i < eleves.size(); i += 3) { 
-            List<Eleve> groupeEleves = eleves.subList(i, Math.min(i + 3, eleves.size()));
+        for (int i = 0; i < eleves.size(); i += nbrePersonneParGroupe) { 
+            List<Eleve> groupeEleves = eleves.subList(i, Math.min(i + nbrePersonneParGroupe, eleves.size()));
             Sujet sujetAleatoire = sujets.get(random.nextInt(sujets.size()));
-            createGroupe("Groupe-" + (i / 3 + 1), ue, new ArrayList<Eleve>(groupeEleves), sujetAleatoire);
+            createGroupe("Groupe-" + (i / nbrePersonneParGroupe + 1), ue, new ArrayList<Eleve>(groupeEleves), sujetAleatoire);
         }
 	}
 
 	@Override
-	public boolean changerGroupeEleve(Eleve eleve, String nouvelIdentifiant, Sujet sujet, UniteEnseignement ue) {
+	public boolean changerGroupeEleve(Eleve eleve, String nouvelIdentifiant, Sujet sujet, UniteEnseignement ue ) {
 		 String updateEleveGroupeSQL = "UPDATE groupe SET identifiant = ?, id_sujet = ?, id_ue = ? WHERE id_eleve = ?";
 
 	        try (Connection connection = DatabaseConnection.getConnection()) {
@@ -125,7 +124,6 @@ public class GroupeService implements GroupeInterface{
 
         return listeGroupes;
     }
-
 	
 	
 }
