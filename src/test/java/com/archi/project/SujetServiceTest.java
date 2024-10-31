@@ -7,7 +7,6 @@ import com.archi.project.metier.services.SujetService;
 import com.archi.project.metier.models.Sujet;
 import com.archi.project.utils.DatabaseInitializer;
 
-import java.util.ArrayList;
 
 public class SujetServiceTest {
 

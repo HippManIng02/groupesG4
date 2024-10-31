@@ -1,1 +1,6 @@
+com/archi/project/GroupeServiceTest.class
+com/archi/project/SujetServiceTest.class
 com/archi/project/AppTest.class
+com/archi/project/EleveServiceTest.class
+com/archi/project/utils/DatabaseInitializer.class
+com/archi/project/UniteEnseignementServiceTest.class

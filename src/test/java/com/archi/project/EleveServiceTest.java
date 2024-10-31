@@ -8,8 +8,6 @@ import com.archi.project.metier.models.Eleve;
 import com.archi.project.metier.services.EleveService;
 import com.archi.project.utils.DatabaseInitializer;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 
 public class EleveServiceTest {
 

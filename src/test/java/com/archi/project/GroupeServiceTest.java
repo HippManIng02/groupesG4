@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import com.archi.project.metier.services.GroupeService;
-import com.archi.project.metier.models.Groupe;
 import com.archi.project.metier.models.UniteEnseignement;
 import com.archi.project.metier.models.Sujet;
 import com.archi.project.metier.models.Eleve;
@@ -69,7 +68,7 @@ public class GroupeServiceTest {
         sujets.add(new Sujet(1, "Algorithmes"));
         sujets.add(new Sujet(2, "Structures de données"));
 
-        groupeService.createGroupesAleatoires(ue, eleves, sujets);
+        groupeService.createGroupesAleatoires(ue, eleves, sujets, 3);
 
         var groupes = groupeService.listGroupes();
         assertTrue(groupes.size() > 0); // Ensure groups were created
