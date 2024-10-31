@@ -11,10 +11,13 @@ import java.util.ArrayList;
 public class GestionEleveApp extends GestionEntityApp<Eleve> {
 
     private static final long serialVersionUID = 1L;
-	private EleveInterface eleveInterface;
 
-    public GestionEleveApp() {
-        super("Gestion des Élèves", new String[]{"ID", "Nom", "Prénom"}, "Nom", "Prénom");
+    private EleveInterface eleveInterface;
+
+    public GestionEleveApp(JFrame mainFrame) {
+        super(mainFrame, "Gestion des Élèves", new String[]{"ID", "Nom", "Prénom"}, "Nom", "Prénom");
+
+        
         eleveInterface = new EleveService();
         loadEntities(); 
     }
@@ -75,9 +78,15 @@ public class GestionEleveApp extends GestionEntityApp<Eleve> {
     }
 
     public static void main(String[] args) {
+    	
+        JFrame mainFrame = new JFrame();
+        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setVisible(true);
+        
         SwingUtilities.invokeLater(() -> {
-            GestionEleveApp gestionEleve = new GestionEleveApp();
+            GestionEleveApp gestionEleve = new GestionEleveApp(mainFrame);
             gestionEleve.setVisible(true);
         });
     }
+
 }

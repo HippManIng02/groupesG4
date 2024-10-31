@@ -10,15 +10,42 @@ import java.util.ArrayList;
 
 public class GestionSujetApp extends GestionEntityApp<Sujet> {
 
+    private static final long serialVersionUID = 1L;
     private SujetInterface sujetInterface;
 
-    public GestionSujetApp() {
-        super("Gestion des Sujets", new String[]{"ID", "Intitulé"}, "Intitulé", "");
+    private JFrame mainFrame; // Reference to the main frame
+
+    public GestionSujetApp(JFrame mainFrame) {
+        super(mainFrame,"Gestion des Sujets", new String[]{"ID", "Intitulé"}, "Intitulé", "");
+        this.mainFrame = mainFrame; // Store the reference
+
         sujetInterface = new SujetService();
         loadEntities();
 
         field2.setEnabled(false);
         field2.setVisible(false);
+        
+
+        createMenu(); 
+    }
+
+    private void createMenu() {
+        JMenuBar menuBar = new JMenuBar();
+        JMenu backMenu = new JMenu("Menu");
+        
+        JMenuItem backMenuItem = new JMenuItem("Retour");
+        backMenuItem.addActionListener(e -> {
+
+        	
+            this.dispose();
+            mainFrame.setVisible(true); 
+            
+        });
+        
+        backMenu.add(backMenuItem);
+        menuBar.add(backMenu);
+
+        setJMenuBar(menuBar);
     }
 
     @Override
@@ -85,7 +112,13 @@ public class GestionSujetApp extends GestionEntityApp<Sujet> {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            GestionSujetApp gestionSujetApp = new GestionSujetApp();
+            // Create a dummy main frame to pass to the GestionSujetApp
+            JFrame mainFrame = new JFrame();
+            mainFrame.setSize(600, 400);
+            mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            mainFrame.setVisible(true); // Make it visible
+
+            GestionSujetApp gestionSujetApp = new GestionSujetApp(mainFrame);
             gestionSujetApp.setVisible(true);
         });
     }

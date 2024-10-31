@@ -13,15 +13,25 @@ public class Login {
     private JLabel messageLabel;
 
     public Login(ActionListener loginActionListener) {
+
         
         loginFrame = new JFrame("Authentification");
         loginFrame.setSize(800, 400);
+
+
+    
+        
         loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         loginFrame.setResizable(false);
+
 
         
         JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(Color.WHITE);
+       
+        loginFrame.add(new JLabel("Nom d'utilisateur:"));
+        usernameField = new JTextField();
+        loginFrame.add(usernameField);
 
         
         JLabel titleLabel = new JLabel("Bienvenue", JLabel.CENTER);
@@ -69,7 +79,7 @@ public class Login {
         JButton loginButton = new JButton("Se connecter");
         loginButton.setFont(new Font("Arial", Font.BOLD, 14));
         loginButton.setBackground(new Color(0, 102, 204));
-        loginButton.setForeground(Color.WHITE);
+        loginButton.setForeground(Color.BLACK);
         fieldsPanel.add(loginButton, gbc);
 
         
@@ -88,21 +98,21 @@ public class Login {
 
         
         loginFrame.add(mainPanel);
+        
         loginFrame.setLocationRelativeTo(null); 
         loginFrame.setVisible(true); 
     }
 
-    
     public void close() {
         loginFrame.dispose();
     }
 
-    
+
     public void setMessage(String message) {
         messageLabel.setText(message);
     }
 
-    
+
     public String getUsername() {
         return usernameField.getText();
     }

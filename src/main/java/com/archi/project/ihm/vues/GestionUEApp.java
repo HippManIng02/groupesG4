@@ -13,8 +13,9 @@ public class GestionUEApp extends GestionEntityApp<UniteEnseignement> {
     private static final long serialVersionUID = 1L;
 	private UniteEnseignementInterface ueInterface;
 
-    public GestionUEApp() {
-        super("Gestion des Unités d'Enseignement", new String[]{"ID", "Code", "Désignation"}, "Code", "Désignation");
+    public GestionUEApp(JFrame mainFrame) {
+        super(mainFrame,"Gestion des Unités d'Enseignement", new String[]{"ID", "Code", "Désignation"}, "Code", "Désignation");
+
         ueInterface = new UniteEnseignementService();
         loadEntities(); 
     }
@@ -74,10 +75,13 @@ public class GestionUEApp extends GestionEntityApp<UniteEnseignement> {
         }
     }
 
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            GestionUEApp gestionUE = new GestionUEApp();
+        	JFrame frame=new JFrame();
+            GestionUEApp gestionUE = new GestionUEApp(frame);
             gestionUE.setVisible(true);
         });
     }
+
 }
