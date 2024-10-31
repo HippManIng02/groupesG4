@@ -58,14 +58,15 @@ public class GroupeService implements GroupeInterface{
 	}
 
 	@Override
-	public void createGroupesAleatoires(UniteEnseignement ue, ArrayList<Eleve> eleves,ArrayList<Sujet> sujets, int nbrePersonneParGroupe) {
+	public void createGroupesAleatoires(ArrayList<UniteEnseignement> ue, ArrayList<Eleve> eleves,ArrayList<Sujet> sujets, int nbrePersonneParGroupe) {
 		
         Random random = new Random();
         
         for (int i = 0; i < eleves.size(); i += nbrePersonneParGroupe) { 
             List<Eleve> groupeEleves = eleves.subList(i, Math.min(i + nbrePersonneParGroupe, eleves.size()));
             Sujet sujetAleatoire = sujets.get(random.nextInt(sujets.size()));
-            createGroupe("Groupe-" + (i / nbrePersonneParGroupe + 1), ue, new ArrayList<Eleve>(groupeEleves), sujetAleatoire);
+            UniteEnseignement ueAleatoire = ue.get(random.nextInt(ue.size()));
+            createGroupe("Groupe-" + (i / nbrePersonneParGroupe + 1), ueAleatoire, new ArrayList<Eleve>(groupeEleves), sujetAleatoire);
         }
 	}
 

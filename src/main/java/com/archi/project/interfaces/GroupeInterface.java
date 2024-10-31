@@ -11,7 +11,7 @@ public interface GroupeInterface{
 	
 	boolean createGroupe(String identifiant, UniteEnseignement ue, ArrayList<Eleve> eleves, Sujet sujet);
 	boolean deleteGroupe(String identifiant);
-	void createGroupesAleatoires(UniteEnseignement ue, ArrayList<Eleve> eleves, ArrayList<Sujet> sujets,int nbrePersonneParGroupe);
+	void createGroupesAleatoires(ArrayList<UniteEnseignement> ue, ArrayList<Eleve> eleves, ArrayList<Sujet> sujets,int nbrePersonneParGroupe);
 	boolean changerGroupeEleve(Eleve eleve, String nouvelIdentifiant, Sujet sujet, UniteEnseignement ue);
 	ArrayList<Groupe> listGroupes();
 }
