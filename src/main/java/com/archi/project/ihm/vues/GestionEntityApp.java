@@ -7,7 +7,8 @@ import java.awt.*;
 
 public abstract class GestionEntityApp<T> extends JFrame {
 
-    protected DefaultTableModel entityTableModel;
+    private static final long serialVersionUID = 1L;
+	protected DefaultTableModel entityTableModel;
     protected JTable entityTable;
     protected JTextField field1; // Champ pour le premier attribut (ex: Nom, Code)
     protected JTextField field2; // Champ pour le deuxième attribut (ex: Prénom, Désignation)

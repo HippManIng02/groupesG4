@@ -10,7 +10,8 @@ import java.util.ArrayList;
 
 public class GestionUEApp extends GestionEntityApp<UniteEnseignement> {
 
-    private UniteEnseignementInterface ueInterface;
+    private static final long serialVersionUID = 1L;
+	private UniteEnseignementInterface ueInterface;
 
     public GestionUEApp() {
         super("Gestion des Unités d'Enseignement", new String[]{"ID", "Code", "Désignation"}, "Code", "Désignation");

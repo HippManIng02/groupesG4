@@ -10,7 +10,8 @@ import java.util.ArrayList;
 
 public class GestionEleveApp extends GestionEntityApp<Eleve> {
 
-    private EleveInterface eleveInterface;
+    private static final long serialVersionUID = 1L;
+	private EleveInterface eleveInterface;
 
     public GestionEleveApp() {
         super("Gestion des Élèves", new String[]{"ID", "Nom", "Prénom"}, "Nom", "Prénom");
