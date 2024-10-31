@@ -22,7 +22,7 @@ public class GroupeServiceTest {
         // Initialize the database before each test
         DatabaseInitializer.initializeDatabase();
         groupeService = new GroupeService();
-        ue = new UniteEnseignement(1, "Mathématiques", "Maths de base"); // Example UE
+        ue = new UniteEnseignement(1, "MATHS300", "Maths de base"); // Example UE
         sujet = new Sujet(1, "Algorithmes"); // Example subject
     }
 
@@ -67,8 +67,12 @@ public class GroupeServiceTest {
         ArrayList<Sujet> sujets = new ArrayList<>();
         sujets.add(new Sujet(1, "Algorithmes"));
         sujets.add(new Sujet(2, "Structures de données"));
+        
+        ArrayList<UniteEnseignement> ues = new ArrayList<>();
+        ues.add(new UniteEnseignement(1,"MATHS222", "Algorithmes"));
+        ues.add(new UniteEnseignement(2, "SP106", "Structures de données"));
 
-        groupeService.createGroupesAleatoires(ue, eleves, sujets, 3);
+        groupeService.createGroupesAleatoires(ues, eleves, sujets, 3);
 
         var groupes = groupeService.listGroupes();
         assertTrue(groupes.size() > 0); // Ensure groups were created
