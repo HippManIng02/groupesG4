@@ -1,15 +1,16 @@
 package com.archi.project.main;
 
+import com.archi.project.ihm.MainApplication;
 
-/**
- * Hello world!
- *
- */
 public class Main 
 {
     public static void main( String[] args )
     {
-        System.out.println(System.getProperty("java.class.path"));
+    	MainApplication mainApp=new MainApplication();
+    	
+    	
+    	
+    	
         
     }
 }

@@ -20,22 +20,28 @@ public class EcouteurCreerGroupeAleatoire implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-    	String input = JOptionPane.showInputDialog(app, "Entrez le nombre de personnes par groupe :", "Créer des Groupes Aléatoires", JOptionPane.QUESTION_MESSAGE);
-        
+    	String inputPersonnes = JOptionPane.showInputDialog(app, "Entrez le nombre de personnes par groupe :", "Créer des Groupes Aléatoires", JOptionPane.QUESTION_MESSAGE);
 
-    	if (input != null && !input.isEmpty()) {
-            try {
-                int nbrePersonneParGroupe = Integer.parseInt(input);
-
-
-                groupeControlleur.creerGroupeAleatoire(nbrePersonneParGroupe);
-
-
-                app.loadEntities();
-
-            } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(app, "Veuillez entrer un nombre valide.", "Erreur de saisie", JOptionPane.ERROR_MESSAGE);
-            }
+    	if (inputPersonnes != null && !inputPersonnes.isEmpty()) {
+    	    try {
+    	        int nbrePersonneParGroupe = Integer.parseInt(inputPersonnes);
+    	        
+    	        String inputGroupes = JOptionPane.showInputDialog(app, "Entrez le nombre de groupes à créer :", "Créer des Groupes Aléatoires", JOptionPane.QUESTION_MESSAGE);
+    	        
+    	        if (inputGroupes != null && !inputGroupes.isEmpty()) {
+    	            int nombreGroupe = Integer.parseInt(inputGroupes);
+    	            
+    	            groupeControlleur.creerGroupeAleatoire(nbrePersonneParGroupe, nombreGroupe);
+    	            
+    	            app.loadEntities();
+    	        } else {
+    	            JOptionPane.showMessageDialog(app, "Le nombre de groupes ne peut pas être vide.", "Erreur de saisie", JOptionPane.ERROR_MESSAGE);
+    	        }
+    	        
+    	    } catch (NumberFormatException ex) {
+    	        JOptionPane.showMessageDialog(app, "Veuillez entrer un nombre valide.", "Erreur de saisie", JOptionPane.ERROR_MESSAGE);
+    	    }
+    	
         }
     }
 }
