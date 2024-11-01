@@ -1,21 +1,15 @@
 package com.archi.project.ihm.vues;
 
-import com.archi.project.interfaces.GroupeInterface;
+import com.archi.project.ihm.controlleurs.GroupeControlleur;
 import com.archi.project.ihm.ecouteurs.EcouteurAjouterGroupe;
 import com.archi.project.ihm.ecouteurs.EcouteurChangerGroupe;
 import com.archi.project.ihm.ecouteurs.EcouteurCreerGroupeAleatoire;
 import com.archi.project.ihm.ecouteurs.EcouteurSupprimerGroupe;
-import com.archi.project.interfaces.EleveInterface;
-import com.archi.project.interfaces.UniteEnseignementInterface;
-import com.archi.project.interfaces.SujetInterface;
+
 import com.archi.project.metier.models.Eleve;
-import com.archi.project.metier.models.UniteEnseignement;
-import com.archi.project.metier.models.Sujet;
 import com.archi.project.metier.models.Groupe;
-import com.archi.project.metier.services.GroupeService;
-import com.archi.project.metier.services.EleveService;
-import com.archi.project.metier.services.UniteEnseignementService;
-import com.archi.project.metier.services.SujetService;
+import com.archi.project.metier.models.Sujet;
+import com.archi.project.metier.models.UniteEnseignement;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -23,12 +17,14 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class GestionGroupeApp extends JFrame {
 
     private static final long serialVersionUID = 1L;
-	private JTable entityTable;
+    private JTable entityTable;
     private DefaultTableModel entityTableModel;
     private JTextField identifiantField;
     private JComboBox<UniteEnseignement> ueComboBox; 
@@ -38,26 +34,23 @@ public class GestionGroupeApp extends JFrame {
     private JButton deleteButton;
     private JButton createRandomGroupsButton;
     private JButton changeGroupButton;
-    private GroupeInterface groupeInterface;
-    private UniteEnseignementInterface ueInterface;
-    private EleveInterface eleveInterface;
-    private SujetInterface sujetInterface;
+    
+    private final GroupeControlleur groupeControlleur;
 
     private ArrayList<Eleve> selectedEleves;
 
     private JTextArea recapArea;
 
     public GestionGroupeApp() {
+    	
+    	
         setTitle("Gestion des Groupes");
         setSize(800, 700); 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null); 
         setLayout(new BorderLayout());
 
-        groupeInterface = new GroupeService();
-        ueInterface = new UniteEnseignementService();
-        eleveInterface = new EleveService();
-        sujetInterface = new SujetService();
+        groupeControlleur = new GroupeControlleur();
 
         selectedEleves = new ArrayList<>();
 
@@ -150,26 +143,92 @@ public class GestionGroupeApp extends JFrame {
         add(buttonPanel, BorderLayout.SOUTH);
 
         loadComboBoxes();
+        createMenuBar(); 
+
+    }
+    
+    
+    
+    private void createMenuBar() {
+        JMenuBar menuBar = new JMenuBar();
+        
+        JMenu gestionMenu = new JMenu("Gestion");
+        
+        JMenuItem gestionSujetsItem = new JMenuItem("Gestion Sujets");
+        gestionSujetsItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Cacher la fenêtre actuelle
+                GestionGroupeApp.this.setVisible(false);
+                GestionSujetApp gestionSujet = new GestionSujetApp(getFrame());
+                gestionSujet.setVisible(true);
+            }
+        });
+        
+        JMenuItem gestionElevesItem = new JMenuItem("Gestion Élèves");
+        gestionElevesItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Cacher la fenêtre actuelle
+                GestionGroupeApp.this.setVisible(false);
+                GestionEleveApp gestionEleve = new GestionEleveApp(getFrame());
+                gestionEleve.setVisible(true);
+            }
+        });
+
+        JMenuItem gestionUEItem = new JMenuItem("Gestion UE");
+        gestionUEItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Cacher la fenêtre actuelle
+                GestionGroupeApp.this.setVisible(false);
+                GestionUEApp gestionUE = new GestionUEApp(getFrame());
+                gestionUE.setVisible(true);
+            }
+        });
+
+        JMenuItem quitterItem = new JMenuItem("Quitter");
+        quitterItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int confirmation = JOptionPane.showConfirmDialog(GestionGroupeApp.this,
+                        "Êtes-vous sûr de vouloir quitter ?",
+                        "Confirmation de sortie",
+                        JOptionPane.YES_NO_OPTION);
+                if (confirmation == JOptionPane.YES_OPTION) {
+                    System.exit(0);
+                }
+            }
+        });
+
+        gestionMenu.add(gestionSujetsItem);
+        gestionMenu.add(gestionElevesItem);
+        gestionMenu.add(gestionUEItem);
+        gestionMenu.addSeparator();
+        gestionMenu.add(quitterItem);
+
+        menuBar.add(gestionMenu);
+        setJMenuBar(menuBar);
     }
 
+
     private void attachListeners() {
-        addButton.addActionListener(new EcouteurAjouterGroupe(this));
-        deleteButton.addActionListener(new EcouteurSupprimerGroupe(this));
-        createRandomGroupsButton.addActionListener(new EcouteurCreerGroupeAleatoire(this));
-        changeGroupButton.addActionListener(new EcouteurChangerGroupe(this));
+        addButton.addActionListener(new EcouteurAjouterGroupe(this, groupeControlleur));
+        deleteButton.addActionListener(new EcouteurSupprimerGroupe(this, groupeControlleur));
+        createRandomGroupsButton.addActionListener(new EcouteurCreerGroupeAleatoire(this, groupeControlleur));
+        changeGroupButton.addActionListener(new EcouteurChangerGroupe(this, groupeControlleur));
     }
 
     private void loadComboBoxes() {
-        ArrayList<UniteEnseignement> ues = ueInterface.listUEs();
-        for (UniteEnseignement ue : ues) {
+    	
+        for (UniteEnseignement ue : groupeControlleur.getAllUEs()) {
             ueComboBox.addItem(ue);
         }
 
-        ArrayList<Eleve> eleves = eleveInterface.eleves();
+        ArrayList<Eleve> eleves = groupeControlleur.getAllEleves();
         eleveList.setListData(eleves.toArray(new Eleve[0]));
 
-        ArrayList<Sujet> sujets = sujetInterface.listSujets();
-        for (Sujet sujet : sujets) {
+        for (Sujet sujet : groupeControlleur.getAllSujets()) {
             sujetComboBox.addItem(sujet);
         }
 
@@ -177,38 +236,9 @@ public class GestionGroupeApp extends JFrame {
         sujetComboBox.setRenderer(new CustomComboBoxRenderer());
     }
 
-    private static class CustomComboBoxRenderer extends DefaultListCellRenderer {
-        @Override
-        public Component getListCellRendererComponent(JList<?> list, Object value, int index,
-                                                       boolean isSelected, boolean cellHasFocus) {
-            JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-            if (value instanceof UniteEnseignement) {
-                UniteEnseignement ue = (UniteEnseignement) value;
-                label.setText(ue.getCode() + " - " + ue.getDesignation()); 
-            } else if (value instanceof Sujet) {
-                Sujet sujet = (Sujet) value;
-                label.setText(sujet.getIntitule()); 
-            }
-            return label;
-        }
-    }
-
-    private static class EleveListRenderer extends DefaultListCellRenderer {
-        @Override
-        public Component getListCellRendererComponent(JList<?> list, Object value, int index, 
-                                                      boolean isSelected, boolean cellHasFocus) {
-            JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-            if (value instanceof Eleve) {
-                Eleve eleve = (Eleve) value;
-                label.setText("ID: " + eleve.getId() + " - " + eleve.getNom() + " " + eleve.getPrenom());
-            }
-            return label;
-        }
-    }
-
     public void loadEntities() {
         entityTableModel.setRowCount(0);
-        ArrayList<Groupe> groupeListData = groupeInterface.listGroupes();
+        ArrayList<Groupe> groupeListData = groupeControlleur.getAllGroupes();
         for (Groupe groupe : groupeListData) {
             StringBuilder elevesStringBuilder = new StringBuilder();
             for (Eleve eleve : groupe.getEleves()) {
@@ -249,7 +279,38 @@ public class GestionGroupeApp extends JFrame {
 
         recapArea.setText(selectedElevesStringBuilder.toString());
     }
-    
+
+    public Eleve getSelectedEleve() {
+        int selectedRow = entityTable.getSelectedRow();
+        if (selectedRow == -1) {
+            return null; 
+        }
+
+        String elevesString = (String) entityTableModel.getValueAt(selectedRow, 2); 
+
+        String[] elevesArray = elevesString.split(", "); 
+        if (elevesArray.length == 0) {
+            return null;
+        }
+
+        String firstEleveInfo = elevesArray[0]; 
+        String[] parts = firstEleveInfo.split(" - ");
+        if (parts.length > 0) {
+            String idPart = parts[0]; 
+            String id = idPart.substring(4); 
+
+            for (Eleve eleve : groupeControlleur.getAllEleves()) {
+                if (String.valueOf(eleve.getId()).equals(id)) { 
+                    return eleve; 
+                }
+            }
+        }
+
+        return null; 
+    }
+    public JFrame getFrame() {
+    	return this;
+    }
 
     public JTextField getIdentifiantField() {
         return identifiantField;
@@ -267,13 +328,11 @@ public class GestionGroupeApp extends JFrame {
         return selectedEleves;
     }
 
-    public GroupeInterface getGroupeInterface() {
-        return groupeInterface;
-    }
-
+ 
     public JTextArea getRecapArea() {
         return recapArea;
     }
+
     public JTable getEntityTable() {
         return entityTable;
     }
@@ -288,4 +347,4 @@ public class GestionGroupeApp extends JFrame {
             app.setVisible(true);
         });
     }
-}
+} 

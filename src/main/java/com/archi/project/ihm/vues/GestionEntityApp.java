@@ -4,24 +4,47 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public abstract class GestionEntityApp<T> extends JFrame {
 
     private static final long serialVersionUID = 1L;
-	protected DefaultTableModel entityTableModel;
+    protected DefaultTableModel entityTableModel;
     protected JTable entityTable;
-    protected JTextField field1; // Champ pour le premier attribut (ex: Nom, Code)
-    protected JTextField field2; // Champ pour le deuxième attribut (ex: Prénom, Désignation)
+    protected JTextField field1; 
+    protected JTextField field2; 
     protected JLabel messageLabel;
 
-    public GestionEntityApp(String title, String[] columnNames, String field1Label, String field2Label) {
+    public GestionEntityApp(JFrame mainFrame, String title, String[] columnNames, String field1Label, String field2Label) {
         setTitle(title);
         setSize(600, 400);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
         setLayout(new BorderLayout());
         setLocationRelativeTo(null);
 
+       
+        JMenuBar menuBar = new JMenuBar();
+        JMenu optionsMenu = new JMenu("Menu");
+        JMenuItem backMenuItem = new JMenuItem("Retour");
 
+
+        backMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            	dispose();
+               
+            	
+                mainFrame.setVisible(true);
+            }
+        });
+
+        optionsMenu.add(backMenuItem);
+        menuBar.add(optionsMenu);
+        setJMenuBar(menuBar); 
+
+      
         entityTableModel = new DefaultTableModel(columnNames, 0);
         entityTable = new JTable(entityTableModel);
         entityTable.setFillsViewportHeight(true);
@@ -30,11 +53,10 @@ public abstract class GestionEntityApp<T> extends JFrame {
         entityTable.setIntercellSpacing(new Dimension(1, 1));
         entityTable.getTableHeader().setReorderingAllowed(false);
 
-        // Personnaliser l'en-tête du tableau
         JTableHeader tableHeader = entityTable.getTableHeader();
-        tableHeader.setBackground(new Color(100, 149, 237)); // Couleur de fond
-        tableHeader.setForeground(Color.WHITE); // Couleur du texte
-        tableHeader.setFont(new Font("Arial", Font.BOLD, 16)); // Police en gras, taille 16
+        tableHeader.setBackground(new Color(100, 149, 237)); 
+        tableHeader.setForeground(Color.WHITE); 
+        tableHeader.setFont(new Font("Arial", Font.BOLD, 16)); 
 
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new GridLayout(3, 2));
@@ -62,6 +84,7 @@ public abstract class GestionEntityApp<T> extends JFrame {
         tablePanel.setLayout(new BorderLayout());
         tablePanel.add(new JScrollPane(entityTable), BorderLayout.CENTER);
         tablePanel.setBackground(Color.WHITE);
+
 
         messageLabel = new JLabel("");
         messageLabel.setHorizontalAlignment(SwingConstants.CENTER);

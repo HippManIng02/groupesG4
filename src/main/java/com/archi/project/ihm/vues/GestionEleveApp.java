@@ -1,28 +1,30 @@
 package com.archi.project.ihm.vues;
 
 import com.archi.project.metier.models.Eleve;
-import com.archi.project.interfaces.EleveInterface;
-import com.archi.project.metier.services.EleveService;
+import com.archi.project.ihm.controlleurs.EleveControlleur;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.List;
 
 public class GestionEleveApp extends GestionEntityApp<Eleve> {
 
-    private static final long serialVersionUID = 1L;
-	private EleveInterface eleveInterface;
+	private static final long serialVersionUID = 1L;
+    private final EleveControlleur eleveControlleur;
 
-    public GestionEleveApp() {
-        super("Gestion des Élèves", new String[]{"ID", "Nom", "Prénom"}, "Nom", "Prénom");
-        eleveInterface = new EleveService();
+    public GestionEleveApp(JFrame mainFrame) {
+        super(mainFrame, "Gestion des Élèves", new String[]{"ID", "Nom", "Prénom"}, "Nom", "Prénom");
+
+        // Initialisation du contrôleur
+        eleveControlleur = new EleveControlleur();
+        
         loadEntities(); 
     }
 
     @Override
     protected void loadEntities() {
         entityTableModel.setRowCount(0);
-        ArrayList<Eleve> eleveListData = eleveInterface.eleves();
+        List<Eleve> eleveListData = eleveControlleur.getAllEleves();
         for (Eleve eleve : eleveListData) {
             entityTableModel.addRow(new Object[]{eleve.getId(), eleve.getNom(), eleve.getPrenom()});
         }
@@ -38,7 +40,7 @@ public class GestionEleveApp extends GestionEntityApp<Eleve> {
             return;
         }
 
-        if (eleveInterface.createEleve(nom, prenom)) {
+        if (eleveControlleur.addEleve(nom, prenom)) {
             loadEntities(); 
             field1.setText("");
             field2.setText(""); 
@@ -65,7 +67,7 @@ public class GestionEleveApp extends GestionEntityApp<Eleve> {
             JOptionPane.YES_NO_OPTION);
 
         if (confirmation == JOptionPane.YES_OPTION) {
-            if (eleveInterface.deleteEleve(id)) {
+            if (eleveControlleur.deleteEleve(id)) {
                 loadEntities();
                 showMessage("L'élève '" + nom + " " + prenom + "' a été supprimé avec succès.", Color.RED);
             } else {
@@ -75,9 +77,14 @@ public class GestionEleveApp extends GestionEntityApp<Eleve> {
     }
 
     public static void main(String[] args) {
+        JFrame mainFrame = new JFrame();
+        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setVisible(true);
+        
         SwingUtilities.invokeLater(() -> {
-            GestionEleveApp gestionEleve = new GestionEleveApp();
+            GestionEleveApp gestionEleve = new GestionEleveApp(mainFrame);
             gestionEleve.setVisible(true);
         });
     }
+
 }

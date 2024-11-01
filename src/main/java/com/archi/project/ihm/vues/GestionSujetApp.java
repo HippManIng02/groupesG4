@@ -1,30 +1,50 @@
 package com.archi.project.ihm.vues;
 
 import com.archi.project.metier.models.Sujet;
-import com.archi.project.interfaces.SujetInterface;
-import com.archi.project.metier.services.SujetService;
+import com.archi.project.ihm.controlleurs.SujetControlleur;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.List;
 
 public class GestionSujetApp extends GestionEntityApp<Sujet> {
 
-    private SujetInterface sujetInterface;
+	private static final long serialVersionUID = 1L;
+    private final SujetControlleur sujetControlleur;
+    private JFrame mainFrame;
 
-    public GestionSujetApp() {
-        super("Gestion des Sujets", new String[]{"ID", "Intitulé"}, "Intitulé", "");
-        sujetInterface = new SujetService();
+    public GestionSujetApp(JFrame mainFrame) {
+        super(mainFrame, "Gestion des Sujets", new String[]{"ID", "Intitulé"}, "Intitulé", "");
+        this.mainFrame = mainFrame;
+        
+        sujetControlleur = new SujetControlleur();
         loadEntities();
 
         field2.setEnabled(false);
         field2.setVisible(false);
+
+        createMenu();
+    }
+
+    private void createMenu() {
+        JMenuBar menuBar = new JMenuBar();
+        JMenu backMenu = new JMenu("Menu");
+
+        JMenuItem backMenuItem = new JMenuItem("Retour");
+        backMenuItem.addActionListener(e -> {
+            this.dispose();
+            mainFrame.setVisible(true);
+        });
+
+        backMenu.add(backMenuItem);
+        menuBar.add(backMenu);
+        setJMenuBar(menuBar);
     }
 
     @Override
     protected void loadEntities() {
         entityTableModel.setRowCount(0);
-        ArrayList<Sujet> sujets = sujetInterface.listSujets();
+        List<Sujet> sujets = sujetControlleur.getAllSujets();
         for (Sujet sujet : sujets) {
             entityTableModel.addRow(new Object[]{sujet.getId(), sujet.getIntitule()});
         }
@@ -39,7 +59,7 @@ public class GestionSujetApp extends GestionEntityApp<Sujet> {
             return;
         }
 
-        if (sujetInterface.createSujet(intitule)) {
+        if (sujetControlleur.addSujet(intitule)) {
             loadEntities();
             field1.setText("");
             showMessage("Sujet '" + intitule + "' ajouté avec succès.", new Color(0, 128, 0));
@@ -65,7 +85,7 @@ public class GestionSujetApp extends GestionEntityApp<Sujet> {
                 JOptionPane.YES_NO_OPTION);
 
         if (confirmation == JOptionPane.YES_OPTION) {
-            if (sujetInterface.deleteSujet(id)) {
+            if (sujetControlleur.deleteSujet(id)) {
                 loadEntities();
                 showMessage("Sujet '" + intitule + "' supprimé avec succès.", Color.RED);
             } else {
@@ -74,18 +94,12 @@ public class GestionSujetApp extends GestionEntityApp<Sujet> {
         }
     }
 
-    @Override
-    protected void customizeButton(JButton button, Color backgroundColor) {
-        button.setBackground(backgroundColor);
-        button.setForeground(Color.BLACK);
-        button.setFont(new Font("Arial", Font.BOLD, 14));
-        button.setOpaque(true);
-        button.setBorderPainted(false);
-    }
-
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            GestionSujetApp gestionSujetApp = new GestionSujetApp();
+    	JFrame mainFrame = new JFrame();
+        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setVisible(true);
+    	SwingUtilities.invokeLater(() -> {
+            GestionSujetApp gestionSujetApp = new GestionSujetApp(mainFrame);
             gestionSujetApp.setVisible(true);
         });
     }

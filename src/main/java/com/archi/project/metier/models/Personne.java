@@ -47,7 +47,7 @@ public class Personne {
 	
 	@Override
 	public String toString() {
-		return "Personne{ Id = " + this.getId() + "; nom = " + this.getNom() + "; prenom = " + this.getPrenom() + "}";
+		return " " + this.getNom() +" " + this.getPrenom() +"";
 
 	}
 	

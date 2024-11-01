@@ -1,18 +1,22 @@
 package com.archi.project.ihm.ecouteurs;
 
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 
+import com.archi.project.ihm.controlleurs.GroupeControlleur;
 import com.archi.project.ihm.vues.GestionGroupeApp;
 import com.archi.project.metier.models.Sujet;
 import com.archi.project.metier.models.UniteEnseignement;
 
 public class EcouteurAjouterGroupe implements ActionListener {
     private GestionGroupeApp app;
+    private GroupeControlleur groupeControlleur;
 
-    public EcouteurAjouterGroupe(GestionGroupeApp app) {
+    public EcouteurAjouterGroupe(GestionGroupeApp app, GroupeControlleur gpc) {
         this.app = app;
+        this.groupeControlleur = gpc;
     }
 
     @Override
@@ -26,7 +30,7 @@ public class EcouteurAjouterGroupe implements ActionListener {
             return;
         }
 
-        boolean success = app.getGroupeInterface().createGroupe(identifiant, ue, app.getSelectedEleves(), sujet);
+        boolean success = groupeControlleur.addGroupe(identifiant, ue, app.getSelectedEleves(), sujet);
 
         if (success) {
             JOptionPane.showMessageDialog(app, "Groupe ajouté avec succès.", "Succès", JOptionPane.INFORMATION_MESSAGE);

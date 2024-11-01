@@ -1,33 +1,50 @@
 package com.archi.project.ihm.ecouteurs;
+
+import com.archi.project.ihm.controlleurs.GroupeControlleur;
+import com.archi.project.ihm.vues.GestionGroupeApp;
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JOptionPane;
-
-import com.archi.project.ihm.vues.GestionGroupeApp;
 
 public class EcouteurSupprimerGroupe implements ActionListener {
-    private GestionGroupeApp app;
 
-    public EcouteurSupprimerGroupe(GestionGroupeApp app) {
-        this.app = app;
+    private GestionGroupeApp gestionGroupeApp;
+    private GroupeControlleur groupeControlleur;
+
+    public EcouteurSupprimerGroupe(GestionGroupeApp gestionGroupeApp,GroupeControlleur gpc) {
+        this.gestionGroupeApp = gestionGroupeApp;
+        this.groupeControlleur = gpc;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        int selectedRow = app.getEntityTable().getSelectedRow();
+        int selectedRow = gestionGroupeApp.getEntityTable().getSelectedRow();
+
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(app, "Veuillez sélectionner un groupe à supprimer.", "Erreur", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(gestionGroupeApp.getFrame(),
+                    "Veuillez sélectionner un groupe à supprimer.",
+                    "Erreur de suppression",
+                    JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        String identifiant = (String) app.getEntityTableModel().getValueAt(selectedRow, 0);
-        boolean success = app.getGroupeInterface().deleteGroupe(identifiant);
+        int confirmation = JOptionPane.showConfirmDialog(gestionGroupeApp.getFrame(),
+                "Êtes-vous sûr de vouloir supprimer ce groupe ?",
+                "Confirmation de suppression",
+                JOptionPane.YES_NO_OPTION);
 
-        if (success) {
-            JOptionPane.showMessageDialog(app, "Groupe supprimé avec succès.", "Succès", JOptionPane.INFORMATION_MESSAGE);
-            app.loadEntities();
-        } else {
-            JOptionPane.showMessageDialog(app, "Échec de la suppression du groupe.", "Erreur", JOptionPane.ERROR_MESSAGE);
+        if (confirmation == JOptionPane.YES_OPTION) {
+            
+            String groupeId = (String) gestionGroupeApp.getEntityTableModel().getValueAt(selectedRow, 0);
+          
+            groupeControlleur.deleteGroupe(groupeId);
+
+            gestionGroupeApp.loadEntities();
+
+            JOptionPane.showMessageDialog(gestionGroupeApp.getFrame(),
+                    "Groupe supprimé avec succès.",
+                    "Suppression réussie",
+                    JOptionPane.INFORMATION_MESSAGE);
         }
     }
 }
