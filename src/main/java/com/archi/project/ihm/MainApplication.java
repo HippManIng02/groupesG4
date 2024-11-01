@@ -39,7 +39,4 @@ public class MainApplication {
         login = new Login(loginActionListener);
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(MainApplication::new);
-    }
 }

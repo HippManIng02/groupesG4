@@ -8,6 +8,7 @@ import com.archi.project.interfaces.*;
 import com.archi.project.metier.services.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class GroupeControlleur {
 	private final GroupeInterface groupeService;
@@ -46,10 +47,21 @@ public class GroupeControlleur {
     	return groupeService.changerGroupeEleve(eleve, identifiant, sujet, ue);
     }
     
-    public void creerGroupeAleatoire(int nbr ) {
+    public void creerGroupeAleatoire(int nbr, int nbg) {
+    	
+    	int nbEleves= nbr * nbg;
+    	
+    	ArrayList<Eleve> eleves= this.getAllEleves();
+    	
+    	Collections.shuffle(eleves);
+    	ArrayList<Eleve> sublist= new ArrayList<Eleve>();
+    	
+    	for(int i=0; i<nbEleves;i++) {
+    		sublist.add(eleves.get(i));
+    	}
     	
     	
-    	groupeService.createGroupesAleatoires(this.getAllUEs(), this.getAllEleves(), this.getAllSujets(), nbr);
+    	groupeService.createGroupesAleatoires(this.getAllUEs(), sublist, this.getAllSujets(), nbr);
     }
 
     public boolean deleteGroupe(String  identifiant) {
