@@ -2,19 +2,19 @@ package com.archi.project.ihm.ecouteurs;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
+import com.archi.project.ihm.controlleurs.GroupeControlleur;
 import com.archi.project.ihm.vues.GestionGroupeApp;
-import com.archi.project.metier.models.UniteEnseignement;
-import com.archi.project.metier.models.Eleve;
-import com.archi.project.metier.models.Sujet;
+
 
 public class EcouteurCreerGroupeAleatoire implements ActionListener {
     private GestionGroupeApp app;
+    private GroupeControlleur groupeControlleur;
 
-    public EcouteurCreerGroupeAleatoire(GestionGroupeApp app) {
+    public EcouteurCreerGroupeAleatoire(GestionGroupeApp app, GroupeControlleur gpc) {
         this.app = app;
+        this.groupeControlleur = gpc;
     }
 
     @Override
@@ -27,11 +27,8 @@ public class EcouteurCreerGroupeAleatoire implements ActionListener {
             try {
                 int nbrePersonneParGroupe = Integer.parseInt(input);
 
-                ArrayList<UniteEnseignement> ueList = app.getUeInterface().listUEs();
-                ArrayList<Eleve> eleveList = app.getEleveInterface().eleves();
-                ArrayList<Sujet> sujetList = app.getSujetInterface().listSujets();
 
-                app.getGroupeInterface().createGroupesAleatoires(ueList, eleveList, sujetList, nbrePersonneParGroupe);
+                groupeControlleur.creerGroupeAleatoire(nbrePersonneParGroupe);
 
 
                 app.loadEntities();

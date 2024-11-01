@@ -1,15 +1,16 @@
 package com.archi.project.ihm.vues;
 
 import javax.swing.*;
-import com.archi.project.interfaces.GroupeInterface;
-import com.archi.project.interfaces.SujetInterface;
-import com.archi.project.interfaces.UniteEnseignementInterface;
+
+import com.archi.project.ihm.controlleurs.GroupeControlleur;
+
 import com.archi.project.metier.models.Eleve;
 import com.archi.project.metier.models.Groupe;
 import com.archi.project.metier.models.Sujet;
 import com.archi.project.metier.models.UniteEnseignement;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class ChangeGroupDialog extends JDialog {
     private static final long serialVersionUID = 1L;
@@ -18,8 +19,9 @@ public class ChangeGroupDialog extends JDialog {
     private JComboBox<Groupe> groupeComboBox;
     private JButton confirmButton;
     private JButton cancelButton;
+    
 
-    public ChangeGroupDialog(Frame parent, UniteEnseignementInterface ueInterface, SujetInterface sujetInterface, GroupeInterface groupeInterface, Eleve eleve) {
+    public ChangeGroupDialog(Frame parent, GroupeControlleur gpc, Eleve eleve) {
         super(parent, "Changer le groupe", true);
         setLayout(new GridLayout(4, 2));
 
@@ -29,13 +31,15 @@ public class ChangeGroupDialog extends JDialog {
         ueComboBox = new JComboBox<>();
         groupeComboBox = new JComboBox<>();
 
-        loadSujets(sujetInterface);
-        loadUniteEnseignements(ueInterface);
-        loadGroupes(groupeInterface);
+        loadSujets(gpc.getAllSujets());
+        loadUniteEnseignements(gpc.getAllUEs());
+        loadGroupes(gpc.getAllGroupes());
 
 
         sujetComboBox.setRenderer(new DefaultListCellRenderer() {
-            @Override
+            private static final long serialVersionUID = 1L;
+
+			@Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 if (value instanceof Sujet) {
 
@@ -93,36 +97,36 @@ public class ChangeGroupDialog extends JDialog {
 
         cancelButton.addActionListener(e -> dispose());
         confirmButton.addActionListener(e -> {
-            handleChangeGroup(groupeInterface, eleve);
+            handleChangeGroup(gpc, eleve);
             dispose();
         });
     }
 
-    private void loadSujets(SujetInterface sujetInterface) {
-        for (Sujet sujet : sujetInterface.listSujets()) {
+    private void loadSujets(ArrayList<Sujet> sujets) {
+        for (Sujet sujet : sujets) {
             sujetComboBox.addItem(sujet);
         }
     }
 
-    private void loadUniteEnseignements(UniteEnseignementInterface ueInterface) {
-        for (UniteEnseignement ue : ueInterface.listUEs()) {
+    private void loadUniteEnseignements(ArrayList<UniteEnseignement> ues) {
+        for (UniteEnseignement ue : ues) {
             ueComboBox.addItem(ue);
         }
     }
 
-    private void loadGroupes(GroupeInterface groupeInterface) {
-        for (Groupe groupe : groupeInterface.listGroupes()) {
+    private void loadGroupes(ArrayList<Groupe> groupes) {
+        for (Groupe groupe : groupes) {
             groupeComboBox.addItem(groupe);
         }
     }
 
-    private void handleChangeGroup(GroupeInterface groupeInterface, Eleve eleve) {
+    private void handleChangeGroup(GroupeControlleur gpc, Eleve eleve) {
         Sujet selectedSujet = (Sujet) sujetComboBox.getSelectedItem();
         UniteEnseignement selectedUE = (UniteEnseignement) ueComboBox.getSelectedItem();
         Groupe selectedGroupe = (Groupe) groupeComboBox.getSelectedItem();
 
         String nouvelIdentifiant = selectedGroupe.getIdentifiant();
-        boolean success = groupeInterface.changerGroupeEleve(eleve, nouvelIdentifiant, selectedSujet, selectedUE);
+        boolean success = gpc.changeGroupe(eleve, nouvelIdentifiant, selectedSujet, selectedUE);
 
         if (success) {
             JOptionPane.showMessageDialog(this, "L'élève a été déplacé avec succès!", "Succès", JOptionPane.INFORMATION_MESSAGE);

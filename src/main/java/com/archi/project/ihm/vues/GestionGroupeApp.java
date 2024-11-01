@@ -1,18 +1,15 @@
 package com.archi.project.ihm.vues;
 
+import com.archi.project.ihm.controlleurs.GroupeControlleur;
 import com.archi.project.ihm.ecouteurs.EcouteurAjouterGroupe;
 import com.archi.project.ihm.ecouteurs.EcouteurChangerGroupe;
 import com.archi.project.ihm.ecouteurs.EcouteurCreerGroupeAleatoire;
 import com.archi.project.ihm.ecouteurs.EcouteurSupprimerGroupe;
-import com.archi.project.interfaces.*;
+
 import com.archi.project.metier.models.Eleve;
 import com.archi.project.metier.models.Groupe;
 import com.archi.project.metier.models.Sujet;
 import com.archi.project.metier.models.UniteEnseignement;
-import com.archi.project.metier.services.EleveService;
-import com.archi.project.metier.services.GroupeService;
-import com.archi.project.metier.services.SujetService;
-import com.archi.project.metier.services.UniteEnseignementService;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -37,26 +34,23 @@ public class GestionGroupeApp extends JFrame {
     private JButton deleteButton;
     private JButton createRandomGroupsButton;
     private JButton changeGroupButton;
-    private GroupeInterface groupeInterface;
-    private UniteEnseignementInterface ueInterface;
-    private EleveInterface eleveInterface;
-    private SujetInterface sujetInterface;
+    
+    private final GroupeControlleur groupeControlleur;
 
     private ArrayList<Eleve> selectedEleves;
 
     private JTextArea recapArea;
 
     public GestionGroupeApp() {
+    	
+    	
         setTitle("Gestion des Groupes");
         setSize(800, 700); 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null); 
         setLayout(new BorderLayout());
 
-        groupeInterface = new GroupeService();
-        ueInterface = new UniteEnseignementService();
-        eleveInterface = new EleveService();
-        sujetInterface = new SujetService();
+        groupeControlleur = new GroupeControlleur();
 
         selectedEleves = new ArrayList<>();
 
@@ -219,23 +213,22 @@ public class GestionGroupeApp extends JFrame {
 
 
     private void attachListeners() {
-        addButton.addActionListener(new EcouteurAjouterGroupe(this));
-        deleteButton.addActionListener(new EcouteurSupprimerGroupe(this));
-        createRandomGroupsButton.addActionListener(new EcouteurCreerGroupeAleatoire(this));
-        changeGroupButton.addActionListener(new EcouteurChangerGroupe(this));
+        addButton.addActionListener(new EcouteurAjouterGroupe(this, groupeControlleur));
+        deleteButton.addActionListener(new EcouteurSupprimerGroupe(this, groupeControlleur));
+        createRandomGroupsButton.addActionListener(new EcouteurCreerGroupeAleatoire(this, groupeControlleur));
+        changeGroupButton.addActionListener(new EcouteurChangerGroupe(this, groupeControlleur));
     }
 
     private void loadComboBoxes() {
-        ArrayList<UniteEnseignement> ues = ueInterface.listUEs();
-        for (UniteEnseignement ue : ues) {
+    	
+        for (UniteEnseignement ue : groupeControlleur.getAllUEs()) {
             ueComboBox.addItem(ue);
         }
 
-        ArrayList<Eleve> eleves = eleveInterface.eleves();
+        ArrayList<Eleve> eleves = groupeControlleur.getAllEleves();
         eleveList.setListData(eleves.toArray(new Eleve[0]));
 
-        ArrayList<Sujet> sujets = sujetInterface.listSujets();
-        for (Sujet sujet : sujets) {
+        for (Sujet sujet : groupeControlleur.getAllSujets()) {
             sujetComboBox.addItem(sujet);
         }
 
@@ -245,7 +238,7 @@ public class GestionGroupeApp extends JFrame {
 
     public void loadEntities() {
         entityTableModel.setRowCount(0);
-        ArrayList<Groupe> groupeListData = groupeInterface.listGroupes();
+        ArrayList<Groupe> groupeListData = groupeControlleur.getAllGroupes();
         for (Groupe groupe : groupeListData) {
             StringBuilder elevesStringBuilder = new StringBuilder();
             for (Eleve eleve : groupe.getEleves()) {
@@ -306,7 +299,7 @@ public class GestionGroupeApp extends JFrame {
             String idPart = parts[0]; 
             String id = idPart.substring(4); 
 
-            for (Eleve eleve : eleveInterface.eleves()) {
+            for (Eleve eleve : groupeControlleur.getAllEleves()) {
                 if (String.valueOf(eleve.getId()).equals(id)) { 
                     return eleve; 
                 }
@@ -335,10 +328,7 @@ public class GestionGroupeApp extends JFrame {
         return selectedEleves;
     }
 
-    public GroupeInterface getGroupeInterface() {
-        return groupeInterface;
-    }
-
+ 
     public JTextArea getRecapArea() {
         return recapArea;
     }
@@ -349,18 +339,6 @@ public class GestionGroupeApp extends JFrame {
 
     public DefaultTableModel getEntityTableModel() {
         return entityTableModel;
-    }
-
-    public UniteEnseignementInterface getUeInterface() {
-        return this.ueInterface;
-    }
-
-    public SujetInterface getSujetInterface() {
-        return sujetInterface;
-    }
-
-    public EleveInterface getEleveInterface() {
-        return eleveInterface;
     }
 
     public static void main(String[] args) {

@@ -1,5 +1,6 @@
 package com.archi.project.ihm.ecouteurs;
 
+import com.archi.project.ihm.controlleurs.GroupeControlleur;
 import com.archi.project.ihm.vues.GestionGroupeApp;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -8,9 +9,11 @@ import java.awt.event.ActionListener;
 public class EcouteurSupprimerGroupe implements ActionListener {
 
     private GestionGroupeApp gestionGroupeApp;
+    private GroupeControlleur groupeControlleur;
 
-    public EcouteurSupprimerGroupe(GestionGroupeApp gestionGroupeApp) {
+    public EcouteurSupprimerGroupe(GestionGroupeApp gestionGroupeApp,GroupeControlleur gpc) {
         this.gestionGroupeApp = gestionGroupeApp;
+        this.groupeControlleur = gpc;
     }
 
     @Override
@@ -34,7 +37,7 @@ public class EcouteurSupprimerGroupe implements ActionListener {
             
             String groupeId = (String) gestionGroupeApp.getEntityTableModel().getValueAt(selectedRow, 0);
           
-            gestionGroupeApp.getGroupeInterface().deleteGroupe(groupeId);
+            groupeControlleur.deleteGroupe(groupeId);
 
             gestionGroupeApp.loadEntities();
 

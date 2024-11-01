@@ -5,16 +5,18 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 
+import com.archi.project.ihm.controlleurs.GroupeControlleur;
 import com.archi.project.ihm.vues.ChangeGroupDialog;
 import com.archi.project.ihm.vues.GestionGroupeApp;
 import com.archi.project.metier.models.Eleve;
-import com.archi.project.metier.models.Groupe;
 
 public class EcouteurChangerGroupe implements ActionListener {
     private GestionGroupeApp app;
+    private GroupeControlleur groupeControlleur;
 
-    public EcouteurChangerGroupe(GestionGroupeApp app) {
+    public EcouteurChangerGroupe(GestionGroupeApp app, GroupeControlleur gpc) {
         this.app = app;
+        this.groupeControlleur = gpc;
     }
 
     @Override
@@ -25,13 +27,7 @@ public class EcouteurChangerGroupe implements ActionListener {
             return;
         }
 
-        ChangeGroupDialog changeGroupDialog = new ChangeGroupDialog(
-            app,
-            app.getUeInterface(),
-            app.getSujetInterface(),
-            app.getGroupeInterface(),
-            app.getSelectedEleve()
-        );
+        ChangeGroupDialog changeGroupDialog = new ChangeGroupDialog(app,groupeControlleur, app.getSelectedEleve() );
         changeGroupDialog.setVisible(true);
         app.loadEntities();
     }

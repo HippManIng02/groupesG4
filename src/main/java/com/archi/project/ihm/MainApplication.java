@@ -25,10 +25,11 @@ public class MainApplication {
 
                 if (username.equals("admin") && password.equals("admin")) {
                     login.setMessage("Connexion réussie !");
-                    login.close();
+                    
                     // Ouvrir directement GestionGroupeApp
                     GestionGroupeApp gestionGroupe = new GestionGroupeApp(); 
                     gestionGroupe.setVisible(true);
+                    login.close();
                 } else {
                     login.setMessage("Nom d'utilisateur ou mot de passe incorrect.");
                 }
