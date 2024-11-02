@@ -1,27 +1,26 @@
 package com.archi.project.ihm.controlleurs;
 
+import com.archi.project.metier.LogiqueMetier;
 import com.archi.project.metier.models.UniteEnseignement;
-import com.archi.project.interfaces.UniteEnseignementInterface;
-import com.archi.project.metier.services.UniteEnseignementService;
 
 import java.util.List;
 
 public class UeControlleur {
-	 private final UniteEnseignementInterface ueInterface;
+	 private final LogiqueMetier logiqueMetier;
 
-	    public UeControlleur() {
-	        this.ueInterface = new UniteEnseignementService();
+	    public UeControlleur(LogiqueMetier logiqueMetier) {
+	        this.logiqueMetier = logiqueMetier;
 	    }
 
 	    public List<UniteEnseignement> getAllUEs() {
-	        return ueInterface.listUEs();
+	        return this.logiqueMetier.getUeService().listUEs();
 	    }
 
 	    public boolean addUE(String code, String designation) {
-	        return ueInterface.createUE(code, designation);
+	        return this.logiqueMetier.getUeService().createUE(code, designation);
 	    }
 
 	    public boolean deleteUE(int id) {
-	        return ueInterface.deleteUE(id);
+	        return this.logiqueMetier.getUeService().deleteUE(id);
 	    }
 }

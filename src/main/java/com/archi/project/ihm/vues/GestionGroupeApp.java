@@ -5,7 +5,7 @@ import com.archi.project.ihm.ecouteurs.EcouteurAjouterGroupe;
 import com.archi.project.ihm.ecouteurs.EcouteurChangerGroupe;
 import com.archi.project.ihm.ecouteurs.EcouteurCreerGroupeAleatoire;
 import com.archi.project.ihm.ecouteurs.EcouteurSupprimerGroupe;
-
+import com.archi.project.metier.LogiqueMetier;
 import com.archi.project.metier.models.Eleve;
 import com.archi.project.metier.models.Groupe;
 import com.archi.project.metier.models.Sujet;
@@ -36,12 +36,13 @@ public class GestionGroupeApp extends JFrame {
     private JButton changeGroupButton;
     
     private final GroupeControlleur groupeControlleur;
+    private final LogiqueMetier logiqueMetier;
 
     private ArrayList<Eleve> selectedEleves;
 
     private JTextArea recapArea;
 
-    public GestionGroupeApp() {
+    public GestionGroupeApp(LogiqueMetier logiqueMetier) {
     	
     	
         setTitle("Gestion des Groupes");
@@ -49,8 +50,9 @@ public class GestionGroupeApp extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null); 
         setLayout(new BorderLayout());
-
-        groupeControlleur = new GroupeControlleur();
+        
+        this.logiqueMetier = logiqueMetier;
+        groupeControlleur = new GroupeControlleur(this.logiqueMetier);
 
         selectedEleves = new ArrayList<>();
 
@@ -73,7 +75,7 @@ public class GestionGroupeApp extends JFrame {
         
         gbc.gridx = 0;
         gbc.gridy = 0;
-        inputPanel.add(new JLabel("Identifiant:"), gbc);
+        inputPanel.add(new JLabel("Identifiant :"), gbc);
 
         gbc.gridx = 1;
         identifiantField = new JTextField();
@@ -82,7 +84,7 @@ public class GestionGroupeApp extends JFrame {
 
         gbc.gridx = 0;
         gbc.gridy = 1;
-        inputPanel.add(new JLabel("Unité d'Enseignement:"), gbc);
+        inputPanel.add(new JLabel("Unité d'Enseignement :"), gbc);
 
         gbc.gridx = 1;
         ueComboBox = new JComboBox<>(); 
@@ -90,7 +92,7 @@ public class GestionGroupeApp extends JFrame {
 
         gbc.gridx = 0;
         gbc.gridy = 2;
-        inputPanel.add(new JLabel("Élèves:"), gbc);
+        inputPanel.add(new JLabel("Élèves :"), gbc);
 
         gbc.gridx = 1;
         eleveList = new JList<>();
@@ -160,7 +162,7 @@ public class GestionGroupeApp extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // Cacher la fenêtre actuelle
                 GestionGroupeApp.this.setVisible(false);
-                GestionSujetApp gestionSujet = new GestionSujetApp(getFrame());
+                GestionSujetApp gestionSujet = new GestionSujetApp(getFrame(), logiqueMetier);
                 gestionSujet.setVisible(true);
             }
         });
@@ -171,7 +173,7 @@ public class GestionGroupeApp extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // Cacher la fenêtre actuelle
                 GestionGroupeApp.this.setVisible(false);
-                GestionEleveApp gestionEleve = new GestionEleveApp(getFrame());
+                GestionEleveApp gestionEleve = new GestionEleveApp(getFrame(), logiqueMetier);
                 gestionEleve.setVisible(true);
             }
         });
@@ -182,7 +184,7 @@ public class GestionGroupeApp extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 // Cacher la fenêtre actuelle
                 GestionGroupeApp.this.setVisible(false);
-                GestionUEApp gestionUE = new GestionUEApp(getFrame());
+                GestionUEApp gestionUE = new GestionUEApp(getFrame(), logiqueMetier);
                 gestionUE.setVisible(true);
             }
         });
@@ -340,11 +342,12 @@ public class GestionGroupeApp extends JFrame {
     public DefaultTableModel getEntityTableModel() {
         return entityTableModel;
     }
+    
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            GestionGroupeApp app = new GestionGroupeApp();
-            app.setVisible(true);
-        });
-    }
+//    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(() -> {
+//            GestionGroupeApp app = new GestionGroupeApp();
+//            app.setVisible(true);
+//        });
+//    }
 } 

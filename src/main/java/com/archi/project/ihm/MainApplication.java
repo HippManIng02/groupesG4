@@ -1,9 +1,8 @@
 package com.archi.project.ihm;
 
-import javax.swing.*;
 import com.archi.project.ihm.vues.GestionGroupeApp;
-
 import com.archi.project.ihm.vues.Login;
+import com.archi.project.metier.LogiqueMetier;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,8 +10,11 @@ import java.awt.event.ActionListener;
 public class MainApplication {
 
     private Login login;
+    
+    private final LogiqueMetier logiqueMetier;
 
-    public MainApplication() {
+    public MainApplication(LogiqueMetier logiqueMetier) {
+    	this.logiqueMetier = logiqueMetier;
         showLoginWindow();
     }
 
@@ -27,7 +29,7 @@ public class MainApplication {
                     login.setMessage("Connexion réussie !");
                     
                     // Ouvrir directement GestionGroupeApp
-                    GestionGroupeApp gestionGroupe = new GestionGroupeApp(); 
+                    GestionGroupeApp gestionGroupe = new GestionGroupeApp(logiqueMetier); 
                     gestionGroupe.setVisible(true);
                     login.close();
                 } else {

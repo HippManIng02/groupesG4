@@ -1,28 +1,28 @@
 package com.archi.project.ihm.controlleurs;
 
+import com.archi.project.metier.LogiqueMetier;
 import com.archi.project.metier.models.Eleve;
-import com.archi.project.interfaces.EleveInterface;
-import com.archi.project.metier.services.EleveService;
 
 import java.util.List;
 
 
 public class EleveControlleur {
-	private final EleveInterface eleveInterface;
+	
+	private final LogiqueMetier logiqueMetier;
 
-    public EleveControlleur() {
-        this.eleveInterface = new EleveService();
+    public EleveControlleur(LogiqueMetier logiqueMetier) {
+        this.logiqueMetier = logiqueMetier;
     }
 
     public List<Eleve> getAllEleves() {
-        return eleveInterface.eleves();
+        return logiqueMetier.getEleveService().eleves();
     }
 
     public boolean addEleve(String nom, String prenom) {
-        return eleveInterface.createEleve(nom, prenom);
+        return logiqueMetier.getEleveService().createEleve(nom, prenom);
     }
 
     public boolean deleteEleve(int id) {
-        return eleveInterface.deleteEleve(id);
+        return logiqueMetier.getEleveService().deleteEleve(id);
     }
 }
