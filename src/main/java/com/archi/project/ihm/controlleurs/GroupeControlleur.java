@@ -1,50 +1,44 @@
 package com.archi.project.ihm.controlleurs;
 
+import com.archi.project.metier.LogiqueMetier;
 import com.archi.project.metier.models.Eleve;
 import com.archi.project.metier.models.Groupe;
 import com.archi.project.metier.models.Sujet;
 import com.archi.project.metier.models.UniteEnseignement;
-import com.archi.project.interfaces.*;
-import com.archi.project.metier.services.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class GroupeControlleur {
-	private final GroupeInterface groupeService;
-    private final UniteEnseignementInterface ueService;
-    private final EleveInterface eleveService;
-    private final SujetInterface sujetService;
 
-    public GroupeControlleur() {
-        this.groupeService = new GroupeService();
-        this.ueService = new UniteEnseignementService();
-        this.eleveService = new EleveService();
-        this.sujetService = new SujetService();
+    private final LogiqueMetier logiqueMetier;
+
+    public GroupeControlleur(LogiqueMetier logiqueMetier) {
+    	this.logiqueMetier = logiqueMetier;
     }
 
     public ArrayList<Groupe> getAllGroupes() {
-        return groupeService.listGroupes();
+        return this.logiqueMetier.getGroupeService().listGroupes();
     }
 
     public ArrayList<UniteEnseignement> getAllUEs() {
-        return ueService.listUEs();
+        return this.logiqueMetier.getUeService().listUEs();
     }
 
     public ArrayList<Eleve> getAllEleves() {
-        return eleveService.eleves();
+        return this.logiqueMetier.getEleveService().eleves();
     }
 
     public ArrayList<Sujet> getAllSujets() {
-        return sujetService.listSujets();
+        return this.logiqueMetier.getSujetService().listSujets();
     }
 
     public boolean addGroupe(String identifiant, UniteEnseignement ue, ArrayList<Eleve> eleves, Sujet sujet) {
-        return groupeService.createGroupe(identifiant, ue, eleves, sujet);
+        return this.logiqueMetier.getGroupeService().createGroupe(identifiant, ue, eleves, sujet);
     }
     
     public boolean changeGroupe(Eleve eleve, String identifiant, Sujet sujet, UniteEnseignement ue) {
-    	return groupeService.changerGroupeEleve(eleve, identifiant, sujet, ue);
+    	return this.logiqueMetier.getGroupeService().changerGroupeEleve(eleve, identifiant, sujet, ue);
     }
     
     public void creerGroupeAleatoire(int nbr, int nbg) {
@@ -61,10 +55,10 @@ public class GroupeControlleur {
     	}
     	
     	
-    	groupeService.createGroupesAleatoires(this.getAllUEs(), sublist, this.getAllSujets(), nbr);
+    	this.logiqueMetier.getGroupeService().createGroupesAleatoires(this.getAllUEs(), sublist, this.getAllSujets(), nbr);
     }
 
     public boolean deleteGroupe(String  identifiant) {
-        return groupeService.deleteGroupe(identifiant);
+        return this.logiqueMetier.getGroupeService().deleteGroupe(identifiant);
     }
 }

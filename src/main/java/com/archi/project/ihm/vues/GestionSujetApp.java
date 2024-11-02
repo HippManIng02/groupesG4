@@ -1,5 +1,6 @@
 package com.archi.project.ihm.vues;
 
+import com.archi.project.metier.LogiqueMetier;
 import com.archi.project.metier.models.Sujet;
 import com.archi.project.ihm.controlleurs.SujetControlleur;
 
@@ -13,11 +14,11 @@ public class GestionSujetApp extends GestionEntityApp<Sujet> {
     private final SujetControlleur sujetControlleur;
     private JFrame mainFrame;
 
-    public GestionSujetApp(JFrame mainFrame) {
+    public GestionSujetApp(JFrame mainFrame, LogiqueMetier logiqueMetier) {
         super(mainFrame, "Gestion des Sujets", new String[]{"ID", "Intitulé"}, "Intitulé", "");
         this.mainFrame = mainFrame;
         
-        sujetControlleur = new SujetControlleur();
+        sujetControlleur = new SujetControlleur(logiqueMetier);
         loadEntities();
 
         field2.setEnabled(false);
@@ -94,13 +95,13 @@ public class GestionSujetApp extends GestionEntityApp<Sujet> {
         }
     }
 
-    public static void main(String[] args) {
-    	JFrame mainFrame = new JFrame();
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setVisible(true);
-    	SwingUtilities.invokeLater(() -> {
-            GestionSujetApp gestionSujetApp = new GestionSujetApp(mainFrame);
-            gestionSujetApp.setVisible(true);
-        });
-    }
+//    public static void main(String[] args) {
+//    	JFrame mainFrame = new JFrame();
+//        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        mainFrame.setVisible(true);
+//    	SwingUtilities.invokeLater(() -> {
+//            GestionSujetApp gestionSujetApp = new GestionSujetApp(mainFrame);
+//            gestionSujetApp.setVisible(true);
+//        });
+//    }
 }

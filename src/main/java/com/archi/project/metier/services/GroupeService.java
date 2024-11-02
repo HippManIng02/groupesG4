@@ -14,6 +14,7 @@ import com.archi.project.metier.models.Eleve;
 import com.archi.project.metier.models.Groupe;
 import com.archi.project.metier.models.Sujet;
 import com.archi.project.metier.models.UniteEnseignement;
+import com.archi.project.utils.GenerateurID;
 
 public class GroupeService implements GroupeInterface{
 
@@ -66,7 +67,8 @@ public class GroupeService implements GroupeInterface{
             List<Eleve> groupeEleves = eleves.subList(i, Math.min(i + nbrePersonneParGroupe, eleves.size()));
             Sujet sujetAleatoire = sujets.get(random.nextInt(sujets.size()));
             UniteEnseignement ueAleatoire = ue.get(random.nextInt(ue.size()));
-            createGroupe("Groupe-" + (i / nbrePersonneParGroupe + 1), ueAleatoire, new ArrayList<Eleve>(groupeEleves), sujetAleatoire);
+            String idGroupe = GenerateurID.generateShortId(); 
+            createGroupe(idGroupe, ueAleatoire, new ArrayList<Eleve>(groupeEleves), sujetAleatoire);
         }
 	}
 

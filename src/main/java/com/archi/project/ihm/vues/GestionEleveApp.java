@@ -1,5 +1,6 @@
 package com.archi.project.ihm.vues;
 
+import com.archi.project.metier.LogiqueMetier;
 import com.archi.project.metier.models.Eleve;
 import com.archi.project.ihm.controlleurs.EleveControlleur;
 
@@ -12,11 +13,14 @@ public class GestionEleveApp extends GestionEntityApp<Eleve> {
 	private static final long serialVersionUID = 1L;
     private final EleveControlleur eleveControlleur;
 
-    public GestionEleveApp(JFrame mainFrame) {
+    public GestionEleveApp(JFrame mainFrame, LogiqueMetier logiqueMetier) {
         super(mainFrame, "Gestion des Élèves", new String[]{"ID", "Nom", "Prénom"}, "Nom", "Prénom");
+        
+        
 
         // Initialisation du contrôleur
-        eleveControlleur = new EleveControlleur();
+        eleveControlleur = new EleveControlleur(logiqueMetier);
+        
         
         loadEntities(); 
     }
@@ -76,15 +80,15 @@ public class GestionEleveApp extends GestionEntityApp<Eleve> {
         }
     }
 
-    public static void main(String[] args) {
-        JFrame mainFrame = new JFrame();
-        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setVisible(true);
-        
-        SwingUtilities.invokeLater(() -> {
-            GestionEleveApp gestionEleve = new GestionEleveApp(mainFrame);
-            gestionEleve.setVisible(true);
-        });
-    }
+//    public static void main(String[] args) {
+//        JFrame mainFrame = new JFrame();
+//        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        mainFrame.setVisible(true);
+//        
+//        SwingUtilities.invokeLater(() -> {
+//            GestionEleveApp gestionEleve = new GestionEleveApp(mainFrame);
+//            gestionEleve.setVisible(true);
+//        });
+//    }
 
 }

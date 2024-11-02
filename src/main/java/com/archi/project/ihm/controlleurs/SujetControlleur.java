@@ -1,28 +1,27 @@
 package com.archi.project.ihm.controlleurs;
 
+import com.archi.project.metier.LogiqueMetier;
 import com.archi.project.metier.models.Sujet;
-import com.archi.project.interfaces.SujetInterface;
-import com.archi.project.metier.services.SujetService;
 
 import java.util.List;
 
 public class SujetControlleur {
 	
-	  private final SujetInterface sujetInterface;
+	  private final LogiqueMetier logiqueMetier;
 
-	    public SujetControlleur() {
-	        this.sujetInterface = new SujetService();
+	    public SujetControlleur(LogiqueMetier logiqueMetier) {
+	        this.logiqueMetier =  logiqueMetier;
 	    }
 
 	    public List<Sujet> getAllSujets() {
-	        return sujetInterface.listSujets();
+	        return logiqueMetier.getSujetService().listSujets();
 	    }
 
 	    public boolean addSujet(String intitule) {
-	        return sujetInterface.createSujet(intitule);
+	        return logiqueMetier.getSujetService().createSujet(intitule);
 	    }
 
 	    public boolean deleteSujet(int id) {
-	        return sujetInterface.deleteSujet(id);
+	        return logiqueMetier.getSujetService().deleteSujet(id);
 	    }
 }
